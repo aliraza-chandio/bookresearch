@@ -25,7 +25,7 @@
                             <div class="col-md-12 col-sm-12 p-0">
                                 <div class="x_panel">
                                     <div class="x_content">
-                                        <h1 class="text-center">SCHOLARS.PK Control Panel</h1>
+                                        <h1 class="text-center">Book Research Control Panel</h1>
                                     </div>
                                 </div>
                             </div>
