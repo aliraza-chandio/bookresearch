@@ -1,18 +1,46 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MasterController;
+use App\Http\Controllers\MasterNativeController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductNativeController;
+use App\Http\Controllers\ProductMasterController;
+use App\Http\Controllers\ProductRelatedController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
+Route::resource('products', ProductController::class);
+//Route::post('/users/delete', 'App\Http\Controllers\UserController@delete')->name('delete');
+
+Route::resource('master_natives', MasterNativeController::class);
+Route::resource('masters', MasterController::class);
+Route::resource('product_natives', ProductNativeController::class);
+Route::resource('product_masters', ProductMasterController::class);
+Route::resource('product_relateds', ProductRelatedController::class);
+Route::resource('users', UserController::class);
+Route::get('/scholar-form/view', 'App\Http\Controllers\UserController@scholarFormView')->name('scholarFormView');
+Route::get('/scholar-form/view/{id}', 'App\Http\Controllers\UserController@scholarFormSingle')->name('scholarFormSingle');
+
+Route::post('/users/delete', 'App\Http\Controllers\UserController@delete')->name('delete');
+
+Route::delete('/scholars/delete/{id}', 'App\Http\Controllers\UserController@scholarDestroy')->name('scholars.destroy');
+
+Route::get('/dashboard', 'App\Http\Controllers\HomeController@dashboard')->name('dashboard');
+Auth::routes();
+
+Route::get('/get-table-type-by-type-id', 'App\Http\Controllers\AjaxController@getTableTypes');
+Route::get('/get-parent-by-table-type', 'App\Http\Controllers\AjaxController@getParents');
+Route::get('/get-types', 'App\Http\Controllers\AjaxController@getTypes');
+Route::get('/share-scholars', 'App\Http\Controllers\ProductController@getScholars');
+Route::post('/share-scholars-ajax', 'App\Http\Controllers\AjaxController@getScholarsAjax');
+
+Route::get('/change-password', 'App\Http\Controllers\Auth\LoginController@changePassword')->name('change-password');
+Route::post('/change-password/store', 'App\Http\Controllers\Auth\LoginController@changePasswordStore')->name('change-password.update');
+Route::get('/profile', 'App\Http\Controllers\Auth\LoginController@profile')->name('profile');
+Route::post('/profile/update', 'App\Http\Controllers\Auth\LoginController@profileUpdate')->name('profile.update');
