@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Book;
-use App\Models\Master;
+use App\Models\Type;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -35,7 +34,9 @@ class BookController extends Controller
      */
     public function create()
     {
-        return view('books.create');
+		$types = Type::latest()->get();
+
+        return view('books.create', compact('types'));
     }
 
     /**
@@ -47,23 +48,20 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'book_id'  => 'required',
-            'related_product_id'  => 'required',
-            'order'  => 'required',
+            'type_id'  => 'required',
+            'title'  => 'required',
+            'description'  => 'required',
+            'status'  => 'required',
         ]);
-        $master = Master::find($request->master_id);
-        if(!$master){
-            return redirect()->back()->with('error', 'Master Could not Found.');
-        }
+
         $book = new Book;
-        $book->product_id = $request->product_id;
-        $book->book_id = $request->book_id;
-        $book->table_book = $master->table_book;
-        $book->master_id = $master->id;
-        $book->related_product_id = $request->related_product_id;
-        $book->order = $request->order;
+        $book->type_id = $request->type_id;
+        $book->title = $request->title;
+        $book->description = $request->description;
+        $book->status = $request->status;
+        $book->extra = "";
         $book->save();
-        return redirect('/books?productId=' . $request->product_id.'&book_id='.$request->book_id)->with('success', 'Book created successfully.');
+        return redirect('/books')->with('success', 'Book created successfully.');
     }
 
     /**
@@ -74,10 +72,8 @@ class BookController extends Controller
      */
     public function show(Book $book)
     {
-        $product = Product::find($book->product_id);
-        $table_book = Master::find($book->table_book);
-        $master = Master::find($book->master_id);
-        return view('books.show', compact('product', 'book','table_book','master'));
+        $type = Type::find($book->type_id);
+        return view('books.show', compact('book','type'));
     }
 
     /**

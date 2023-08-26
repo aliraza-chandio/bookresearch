@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('page-title')
-Create Book
+Edit Type
 @endsection
 @section('content')
 <style>
@@ -23,7 +23,7 @@ Create Book
     <div>
         <div class="page-title">
             <div class="title_left">
-                <h3>Create Book</h3>
+                <h3>Edit Type</h3>
             </div>
             <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-lg-12 form-group text-right top_search">
@@ -37,66 +37,59 @@ Create Book
                 <div class="x_panel">
                     <div class="x_content">
                         <br />
-                        <form class="form-horizontal form-label-left" action="{{ route('books.store') }}"
-                            method="POST" id="productForm">
+                        <form class="form-horizontal form-label-left"
+                            action="{{ route('types.update',$type->id) }}" method="POST"
+                            id="productForm">
                             @csrf
+                            @method('PUT')
                             @include('layouts.flash-message')
                             <div class="form-group row">
-                                <div class="col-md-12 col-sm-12 ">
-                                    <label class="control-label fs18">Select Type <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="type_id" id="type_id">
-                                        <option>Select Type</option>
-                                        @foreach($types as $type)
-                                            <option value="{{ $type->id }}">{{ $type->title }}</option>
+                                <input type="hidden" name="product_id" value="{{ $type->product_id }}">
+                                <input type="hidden" name="type_id" id="type_id"  value="{{ $_GET['type_id'] }}">
+                                {{-- <div class="col-md-6 col-sm-6 ">
+                                    <label class="control-label fs18">Products <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="product_id" id="product_id">
+                                        @foreach($products as $product)
+                                            <option value="{{ $product->id }}">{{ $product->name }}</option>
                                         @endforeach
                                     </select>
-
-                                    @error('type_id')
+                                    @error('lang')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
-                                </div>
+                                </div> --}}
 
-                                <div class="col-md-12 col-sm-12 ">
-                                    <label class="control-label fs18">Title <span class="text-danger">*</span></label>
-
-                                    <input type="text" class="form-control" name="title" id="title" >
-                                    @error('title')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-12 col-sm-12 ">
-                                    <label class="control-label fs18">Description <span class="text-danger">*</span></label>
-
-                                    <textarea type="text" class="form-control summernote" name="description" id="description" ></textarea>
-                                    @error('description')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-12 col-sm-12 ">
-                                    <label class="control-label fs18">Status <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="status" id="status">
-                                        <option>Please Select</option>
-                                        <option value="1">Active</option>
-                                        <option value="2">Deactive</option>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <label class="control-label fs18">Select Table Type <span class="text-danger">*</span></label>
+                                    <select class="form-control" name="table_type" id="table_type">
                                     </select>
 
-                                    @error('status')
+                                    @error('table_type')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
                                 </div>
+
+                                <div class="col-md-6 col-sm-6">
+                                    <label class="control-label fs18">Related ID <span
+                                            class="text-danger">*</span></label>
+
+                                    <select class="form-control" name="related_id" id="related_id">
+                                    </select>
+                                    @error('related_id')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+
                             </div>
                             <div class="ln_solid"></div>
                             <div class="form-group">
                                 <div class="col-md-12 text-center">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </div>
                         </form>
@@ -110,38 +103,69 @@ Create Book
 @section('script')
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/speakingurl/14.0.1/speakingurl.min.js"></script>
-<script src="/assets/js/jquery.stringtoslug.min.js"></script>
+
 <script>
     $(document).ready(function() {
-        $("#type_id").select2({
-            placeholder: "Select a Type ..."
+        $("#product_id").select2({
+            placeholder: "Select a product ..."
         }).trigger("change");
 
         $('.summernote').summernote({
             height: 200,
         });
+        var type = $('#type_id').val();
+        $.ajax({
+            url: "/get-table-type-by-type-id?type={{ $type->type_id }}",
+            type: "GET",
+            dataType: 'json',
+            success: function(result) {
+                $("#table_type").html('');
+                $.each(result, function(key, value) {
+                    var table_type = {{ $type->table_type }};
+                    if(table_type == value.id){
+                        $("#table_type").append('<option selected value="' + value.id + '">' + value.name + '</option>');
+                    }
+                    else{
+                        $("#table_type").append('<option value="' + value.id + '">' + value.name + '</option>');
+                    }
+                });
+                $("#table_type").select2({
+                    placeholder: "Select Table Type ..."
+                }).val({{ $type->table_type }}).trigger("change");
+                $.ajax({
+                    url: "/get-parent-by-table-type?type={{ $type->type_id }}&table_type={{ $type->table_type }}",
+                    type: "GET",
+                    dataType: 'json',
+                    success: function(result) {
+                        $("#parent").html('');
+                        $.each(result, function(key, value) {
+                            $("#parent").append('<option value="' + value.id + '">' + value
+                                .name + '</option>');
+                        });
+
+                        $("#parent").select2({
+                            placeholder: "Select Parent ..."
+                        }).val({{ $type->parent }}).trigger("change");
+                    }
+                });
+            }
+        });
     });
 $("#productForm").validate({
     rules: {
-        type_id: {
+        table_type: {
             required: true
         },
-        related_product_id: {
-            required: true
-        },
-        order: {
+        related_id: {
             required: true
         },
     },
     messages: {
-        type_id: {
-            required: "Type Id cannot be blank.",
+        table_type: {
+            required: "Table Type cannot be blank.",
         },
-        related_product_id: {
-            required: "Related Product Id cannot be blank.",
-        },
-        order: {
-            required: "Order cannot be blank.",
+        related_id: {
+            required: "Related Id cannot be blank.",
         },
     },
     highlight: function(element, errorClass, validClass) {
@@ -207,27 +231,6 @@ $("input").bind("propertychange change click keyup input paste", function(e) {
 });
 $("select").on("select2:close", function(e) {
     $(this).valid();
-});
-
-$('#table_type').on('change', function() {
-    var type = $('#type_id').val();
-    var table_type = $('#table_type').val();
-    $.ajax({
-        url: "/get-parent-by-table-type?type=" + type + "&table_type=" + table_type,
-        type: "GET",
-        dataType: 'json',
-        success: function(result) {
-            $("#related_id").html('<option value="">Select Related ID</option>');
-            $.each(result, function(key, value) {
-                $("#related_id").append('<option value="' + value.id + '">' + value
-                    .name + '</option>');
-            });
-
-            $("#related_id").select2({
-                placeholder: "Select Related ID..."
-            }).trigger("change");
-        }
-    });
 });
 </script>
 @endsection

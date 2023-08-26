@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('page-title')
-Create Book
+Create Type
 @endsection
 @section('content')
 <style>
@@ -23,7 +23,7 @@ Create Book
     <div>
         <div class="page-title">
             <div class="title_left">
-                <h3>Create Book</h3>
+                <h3>Create Type</h3>
             </div>
             <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-lg-12 form-group text-right top_search">
@@ -37,27 +37,11 @@ Create Book
                 <div class="x_panel">
                     <div class="x_content">
                         <br />
-                        <form class="form-horizontal form-label-left" action="{{ route('books.store') }}"
+                        <form class="form-horizontal form-label-left" action="{{ route('types.store') }}"
                             method="POST" id="productForm">
                             @csrf
                             @include('layouts.flash-message')
                             <div class="form-group row">
-                                <div class="col-md-12 col-sm-12 ">
-                                    <label class="control-label fs18">Select Type <span class="text-danger">*</span></label>
-                                    <select class="form-control" name="type_id" id="type_id">
-                                        <option>Select Type</option>
-                                        @foreach($types as $type)
-                                            <option value="{{ $type->id }}">{{ $type->title }}</option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('type_id')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-
                                 <div class="col-md-12 col-sm-12 ">
                                     <label class="control-label fs18">Title <span class="text-danger">*</span></label>
 
@@ -126,7 +110,7 @@ $("#productForm").validate({
         type_id: {
             required: true
         },
-        related_product_id: {
+        type_id: {
             required: true
         },
         order: {
@@ -137,7 +121,7 @@ $("#productForm").validate({
         type_id: {
             required: "Type Id cannot be blank.",
         },
-        related_product_id: {
+        type_id: {
             required: "Related Product Id cannot be blank.",
         },
         order: {

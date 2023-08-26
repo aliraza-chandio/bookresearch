@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\Type;
-use App\Models\Master;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -48,23 +45,16 @@ class TypeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'type_id'  => 'required',
-            'related_product_id'  => 'required',
-            'order'  => 'required',
+            'title'  => 'required',
+            'description'  => 'required',
+            'status'  => 'required',
         ]);
-        $master = Master::find($request->master_id);
-        if(!$master){
-            return redirect()->back()->with('error', 'Master Could not Found.');
-        }
         $type = new Type;
-        $type->product_id = $request->product_id;
-        $type->type_id = $request->type_id;
-        $type->table_type = $master->table_type;
-        $type->master_id = $master->id;
-        $type->related_product_id = $request->related_product_id;
-        $type->order = $request->order;
+        $type->title = $request->title;
+        $type->description = $request->description;
+        $type->status = $request->status;
         $type->save();
-        return redirect('/types?productId=' . $request->product_id.'&type_id='.$request->type_id)->with('success', 'Type created successfully.');
+        return redirect('/types')->with('success', 'Type created successfully.');
     }
 
     /**
@@ -75,10 +65,7 @@ class TypeController extends Controller
      */
     public function show(Type $type)
     {
-        $product = Product::find($type->product_id);
-        $table_type = Master::find($type->table_type);
-        $master = Master::find($type->master_id);
-        return view('types.show', compact('product', 'type','table_type','master'));
+        return view('types.show', compact('type'));
     }
 
     /**

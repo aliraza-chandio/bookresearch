@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('page-title')
-    Show Book
+    Show Type
 @endsection
 
 @section('content')
@@ -8,7 +8,7 @@
         <div class="">
             <div class="page-title">
                 <div class="title_left">
-                    <h3>Show Book</h3>
+                    <h3>Show Type</h3>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -20,23 +20,19 @@
                                 <tbody>
                                     <tr>
                                         <th>ID</th>
-                                        <td>{{ $book->id }}</td>
+                                        <td>{{ $type->id }}</td>
                                     </tr>
                                     <tr>
                                         <th>Title</th>
-                                        <td>{{ $book->title }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Description</th>
-                                        <td>{{ $book->description }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Type</th>
                                         <td>{{ $type->title }}</td>
                                     </tr>
                                     <tr>
+                                        <th>Description</th>
+                                        <td>{{ $type->description }}</td>
+                                    </tr>
+                                    <tr>
                                         <th>Status</th>
-                                        <td>{!! $book->status == 1 ? '<button class="btn btn-success">Active</button>' : '<button class="btn btn-danger">Deactive</button>'  !!}</td>
+                                        <td>{{ $type->status }}</td>
                                     </tr>
                                 </tbody>
                             </table>
