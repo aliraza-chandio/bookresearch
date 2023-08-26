@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('page-title')
-Create Product Related
+Create Book
 @endsection
 @section('content')
 <style>
@@ -23,7 +23,7 @@ Create Product Related
     <div>
         <div class="page-title">
             <div class="title_left">
-                <h3>Create Product Related</h3>
+                <h3>Create Book</h3>
             </div>
             <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-lg-12 form-group text-right top_search">
@@ -37,7 +37,7 @@ Create Product Related
                 <div class="x_panel">
                     <div class="x_content">
                         <br />
-                        <form class="form-horizontal form-label-left" action="{{ route('product_relateds.store') }}"
+                        <form class="form-horizontal form-label-left" action="{{ route('books.store') }}"
                             method="POST" id="productForm">
                             @csrf
                             @include('layouts.flash-message')

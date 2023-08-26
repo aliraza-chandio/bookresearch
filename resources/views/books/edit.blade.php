@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('page-title')
-Edit Product Related
+Edit Book
 @endsection
 @section('content')
 <style>
@@ -23,7 +23,7 @@ Edit Product Related
     <div>
         <div class="page-title">
             <div class="title_left">
-                <h3>Edit Product Related</h3>
+                <h3>Edit Book</h3>
             </div>
             <div class="title_right">
                 <div class="col-md-5 col-sm-5 col-lg-12 form-group text-right top_search">
@@ -38,13 +38,13 @@ Edit Product Related
                     <div class="x_content">
                         <br />
                         <form class="form-horizontal form-label-left"
-                            action="{{ route('product_relateds.update',$product_related->id) }}" method="POST"
+                            action="{{ route('books.update',$book->id) }}" method="POST"
                             id="productForm">
                             @csrf
                             @method('PUT')
                             @include('layouts.flash-message')
                             <div class="form-group row">
-                                <input type="hidden" name="product_id" value="{{ $product_related->product_id }}">
+                                <input type="hidden" name="product_id" value="{{ $book->product_id }}">
                                 <input type="hidden" name="type_id" id="type_id"  value="{{ $_GET['type_id'] }}">
                                 {{-- <div class="col-md-6 col-sm-6 ">
                                     <label class="control-label fs18">Products <span class="text-danger">*</span></label>
@@ -115,13 +115,13 @@ Edit Product Related
         });
         var type = $('#type_id').val();
         $.ajax({
-            url: "/get-table-type-by-type-id?type={{ $product_related->type_id }}",
+            url: "/get-table-type-by-type-id?type={{ $book->type_id }}",
             type: "GET",
             dataType: 'json',
             success: function(result) {
                 $("#table_type").html('');
                 $.each(result, function(key, value) {
-                    var table_type = {{ $product_related->table_type }};
+                    var table_type = {{ $book->table_type }};
                     if(table_type == value.id){
                         $("#table_type").append('<option selected value="' + value.id + '">' + value.name + '</option>');
                     }
@@ -131,9 +131,9 @@ Edit Product Related
                 });
                 $("#table_type").select2({
                     placeholder: "Select Table Type ..."
-                }).val({{ $product_related->table_type }}).trigger("change");
+                }).val({{ $book->table_type }}).trigger("change");
                 $.ajax({
-                    url: "/get-parent-by-table-type?type={{ $product_related->type_id }}&table_type={{ $product_related->table_type }}",
+                    url: "/get-parent-by-table-type?type={{ $book->type_id }}&table_type={{ $book->table_type }}",
                     type: "GET",
                     dataType: 'json',
                     success: function(result) {
@@ -145,7 +145,7 @@ Edit Product Related
 
                         $("#parent").select2({
                             placeholder: "Select Parent ..."
-                        }).val({{ $product_related->parent }}).trigger("change");
+                        }).val({{ $book->parent }}).trigger("change");
                     }
                 });
             }

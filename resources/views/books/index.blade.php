@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('page-title')
-    Product Relateds
+    Books
 @endsection
 @section('content')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -9,12 +9,12 @@
         <div class="">
             <div class="page-title">
                 <div class="title_left">
-                    <h3>Product Relateds </h3>
+                    <h3>Books </h3>
                 </div>
             </div>
             <div class="title_right">
                 <div class="col-md-4 col-sm-4 col-lg-6 mr-auto form-group text-right top_search">
-                    <a class="btn btn-success" href="{{ route('product_relateds.create') }}?productId={{ isset($_GET['ProductSearch']['product_id']) ? $_GET['ProductSearch']['product_id'] : '' }}&type_id={{ isset($_GET['ProductSearch']['type']) ? $_GET['ProductSearch']['type'] : '' }}"> Create Product Related</a>
+                    <a class="btn btn-success" href="{{ route('books.create') }}?productId={{ isset($_GET['ProductSearch']['product_id']) ? $_GET['ProductSearch']['product_id'] : '' }}&type_id={{ isset($_GET['ProductSearch']['type']) ? $_GET['ProductSearch']['type'] : '' }}"> Create Book</a>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -67,17 +67,17 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($product_relateds as $product_related)
+                                    @foreach ($books as $book)
                                         <tr>
-                                            <th>{{ $product_related->id }}</th>
+                                            <th>{{ $book->id }}</th>
                                             <td>
                                                 @php
-                                                if($product_related->product_id == null){
+                                                if($book->product_id == null){
                                                     $productName = 'Product not set';
                                                 }
                                                 else {
 
-                                                    $product = \App\Models\Product::find($product_related->product_id);
+                                                    $product = \App\Models\Product::find($book->product_id);
                                                     if(empty($product)){
                                                        $productName = 'Product not available';
                                                     }
@@ -91,12 +91,12 @@
                                             </td>
                                             <td>
                                                 @php
-                                                if($product_related->related_product_id == null){
+                                                if($book->related_product_id == null){
                                                     $productName = 'Related Product not set';
                                                 }
                                                 else {
 
-                                                    $product = \App\Models\Product::find($product_related->related_product_id);
+                                                    $product = \App\Models\Product::find($book->related_product_id);
                                                     if(empty($product)){
                                                        $productName = 'Related Product not available';
                                                     }
@@ -111,12 +111,12 @@
 
                                             <td>
                                                 @php
-                                                if($product_related->master_id == null){
+                                                if($book->master_id == null){
                                                     $relatedName = 'Product not set';
                                                 }
                                                 else {
 
-                                                    $related = \App\Models\Master::find($product_related->master_id);
+                                                    $related = \App\Models\Master::find($book->master_id);
                                                     if(empty($related)){
                                                        $relatedName = 'Related not available';
                                                     }
@@ -131,26 +131,26 @@
                                             <td>
                                                 @php
 
-                                                $type = \App\Models\Type::find($product_related->type_id);
+                                                $type = \App\Models\Type::find($book->type_id);
                                                 @endphp
                                                 {{ $type->name }}
                                             </td>
                                             <td>
-                                                {{ $product_related->order }}
+                                                {{ $book->order }}
                                             </td>
                                             <td>
-                                                <form action="{{ route('product_relateds.destroy', $product_related->id) }}"
+                                                <form action="{{ route('books.destroy', $book->id) }}"
                                                     method="POST">
                                                     <a class="btn-sm btn btn-info "
-                                                        href="{{ route('product_relateds.show', $product_related->id) }}"><i
+                                                        href="{{ route('books.show', $book->id) }}"><i
                                                             class="fa fa-eye"></i></a>
                                                     <a class="btn-sm btn btn-primary"
-                                                        href="{{ route('product_relateds.edit', $product_related->id) }}?&type_id={{ isset($_GET['ProductSearch']['type']) ? $_GET['ProductSearch']['type'] : '' }}"><i
+                                                        href="{{ route('books.edit', $book->id) }}?&type_id={{ isset($_GET['ProductSearch']['type']) ? $_GET['ProductSearch']['type'] : '' }}"><i
                                                             class="fa fa-edit"></i></a>
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn-sm btn btn-danger"
-                                                        onclick="return confirm('Are you sure do you wan\'t to delete the Product Related?')"><i
+                                                        onclick="return confirm('Are you sure do you wan\'t to delete the Book?')"><i
                                                             class="fa fa-trash"></i></button>
                                                 </form>
                                             </td>
@@ -159,7 +159,7 @@
                                 </tbody>
                             </table>
                             <div class="row text-center justify-content-center">
-                                {{ $product_relateds->links('layouts.pagination') }}</div>
+                                {{ $books->links('layouts.pagination') }}</div>
                         </div>
                     </div>
                 </div>

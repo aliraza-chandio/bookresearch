@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('page-title')
-    Show User
+    Show Book
 @endsection
 
 @section('content')
@@ -8,7 +8,7 @@
         <div class="">
             <div class="page-title">
                 <div class="title_left">
-                    <h3>Show User</h3>
+                    <h3>Show Book</h3>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -20,19 +20,19 @@
                                 <tbody>
                                     <tr>
                                         <th>ID</th>
-                                        <td>{{ $user->id }}</td>
+                                        <td>{{ $book->id }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Name</th>
-                                        <td>{{ $user->name }}</td>
+                                        <th>Product</th>
+                                        <td>{{ $product->name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Email</th>
-                                        <td>{{ $user->email }}</td>
+                                        <th>Table Type</th>
+                                        <td>{{ $table_type->name }}</td>
                                     </tr>
                                     <tr>
-                                        <th>Role</th>
-                                        <td>{{ $user->role }}</td>
+                                        <th>Related </th>
+                                        <td>{{ $related->name }}</td>
                                     </tr>
                                 </tbody>
                             </table>
