@@ -2,8 +2,8 @@
 return [
     // Website Name
     'siteName' => 'Books Research',
-    'siteURL' => 'http://127.0.0.1:8000',
-    // 'siteURL' => 'https://bookresearch.scholars.pk/',
+    // 'siteURL' => 'http://127.0.0.1:8000',
+    'siteURL' => 'https://bookresearch.scholars.pk/',
     'img' => '/assets/images',
     'imgLogin' => '/assets/login/images',
     'vendorLogin' => '/assets/login/vendor',
